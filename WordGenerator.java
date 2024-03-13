@@ -4,7 +4,7 @@ import java.util.Random;
 public class WordGenerator {
     private ArrayList<String> words;
 
-    public WordGenerator() { // Nivel 3
+    public WordGenerator() {
         this.words = new ArrayList<>();
         fillArrayList();
     }
@@ -33,7 +33,7 @@ public class WordGenerator {
         return words.get(index);
     }
 
-    public void addWord(String world){
-        words.add(world);
+    public void addWord(String word) {
+        words.add(word);
     }
 }

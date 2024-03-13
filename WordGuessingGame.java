@@ -1,33 +1,53 @@
-
 public class WordGuessingGame {
     private String hiddenWord;
     private String guessedWord;
     private int numberOfTries;
-    private InputReader reader; // Nivel 2
+    private InputReader reader;
+    private WordGenerator wordGenerator;
 
     public WordGuessingGame() {
-        this.hiddenWord = "abc";
-        this.guessedWord = "___";
+        this.wordGenerator = new WordGenerator();
+        this.hiddenWord = wordGenerator.generateWord();
+        initializeGuessedWord();
         this.numberOfTries = 0;
-        this.reader = new InputReader(); // Nivel 2
+        this.reader = new InputReader();
     }
 
-    public static void main(String[] args) {
-        WordGuessingGame game = new WordGuessingGame();
-        game.showGuessedWord();
+    public void reset() {
+        this.hiddenWord = wordGenerator.generateWord();
+        initializeGuessedWord();
+        this.numberOfTries = 0;
     }
 
-    public void play() { // Nivel 2
-        showWelcome();
-        while (!this.guessedWord.equals(this.hiddenWord)) {
-            showGuessedWord();
-            char guessedWorld = this.reader.getChar("Guess a ?");
+    public String getHiddenWord() {
+        return hiddenWord;
+    }
+
+    public String getGuessedWord() {
+        return guessedWord;
+    }
+
+    public int getNumberOfTries() {
+        return numberOfTries;
+    }
+
+    private void initializeGuessedWord() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < this.hiddenWord.length(); i++) {
+            sb.append("_");
         }
-        showGuessedWord();
-        showResult();
+        this.guessedWord = sb.toString();
     }
 
-    public void guess(char letter) { // Nivel 2
+    private void showWelcome() {
+        System.out.println("Welcome to the Word Guessing Game!");
+    }
+
+    public void showGuessedWord() {
+        System.out.println(this.guessedWord);
+    }
+
+    private void guess(char letter) {
         boolean hasGuessedCorrectly = false;
         StringBuilder newGuessedWord = new StringBuilder(this.guessedWord);
 
@@ -38,38 +58,32 @@ public class WordGuessingGame {
             }
         }
 
-        this.guessedWord = newGuessedWord.toString();
-
-        if (!hasGuessedCorrectly) {
+        if (hasGuessedCorrectly) {
+            this.guessedWord = newGuessedWord.toString();
+        } else {
             this.numberOfTries++;
         }
     }
 
-    public void showGuessedWord() {
-        System.out.println(this.guessedWord);
-    }
-    public void showWelcome () { // Nivel 2
-        System.out.println("Welcome the Gme");
+    private void showResult() {
+        System.out.println("Congratulations! You've guessed the word \"" + this.hiddenWord + "\" with " + this.numberOfTries + " incorrect guesses.");
     }
 
-    public void showGuessedWorld() { // Nivel 2
-        System.out.println("Congratulation for the game" + this.hiddenWord);
+    public void play() {
+        showWelcome();
+
+        while (!this.guessedWord.equals(this.hiddenWord)) {
+            showGuessedWord();
+            char guessedChar = this.reader.getChar("Guess a letter: ");
+            guess(guessedChar);
+        }
+
+        showGuessedWord();
+        showResult();
     }
 
-    public void showResult() { //Nivel 2
-        System.out.println("Nice game :)" + this.hiddenWord + "With" + this.numberOfTries + "Incorrect question");
+    public static void main(String[] args) {
+        WordGuessingGame game = new WordGuessingGame();
+        game.play();
     }
-
-    public String getGuessedWord() {
-        return guessedWord;
-    }
-
-    public  String getHiddenWord() {
-        return hiddenWord;
-    }
-
-    public int getNumberOfTries() {
-        return numberOfTries;
-    }
-
 }
